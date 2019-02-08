@@ -30,7 +30,10 @@ func convertRow(columns []*athena.ColumnInfo, in []*athena.Datum, ret []driver.V
 }
 
 func convertValue(athenaType string, rawValue *string) (interface{}, error) {
-	val := *rawValue
+	var val string
+	if rawValue != nil {
+		val = *rawValue
+	}
 	switch athenaType {
 	case "smallint":
 		return strconv.ParseInt(val, 10, 16)
