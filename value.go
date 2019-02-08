@@ -54,7 +54,7 @@ func convertValue(athenaType string, rawValue *string) (interface{}, error) {
 		return strconv.ParseFloat(val, 32)
 	case "double", "decimal":
 		return strconv.ParseFloat(val, 64)
-	case "varchar", "string", "json":
+	case "varchar", "string", "json", "map":
 		return val, nil
 	case "timestamp":
 		return time.Parse(TimestampLayout, val)
