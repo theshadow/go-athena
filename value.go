@@ -30,10 +30,6 @@ func convertRow(columns []*athena.ColumnInfo, in []*athena.Datum, ret []driver.V
 }
 
 func convertValue(athenaType string, rawValue *string) (interface{}, error) {
-	if rawValue == nil {
-		return nil, nil
-	}
-
 	val := *rawValue
 	switch athenaType {
 	case "smallint":
@@ -47,6 +43,8 @@ func convertValue(athenaType string, rawValue *string) (interface{}, error) {
 		case "true":
 			return true, nil
 		case "false":
+			return false, nil
+		default:
 			return false, nil
 		}
 		return nil, fmt.Errorf("cannot parse '%s' as boolean", val)
@@ -63,6 +61,9 @@ func convertValue(athenaType string, rawValue *string) (interface{}, error) {
 	case "date":
 		return time.Parse(DateLayout, val)
 	default:
+		if rawValue == nil {
+			return nil, nil
+		}
 		panic(fmt.Errorf("unknown type `%s` with value %s", athenaType, val))
 	}
 }
